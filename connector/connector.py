@@ -5,7 +5,6 @@ with open(DIR / "data.json", "r") as file:
     data = json.load(file)
 HOST = data["HOST"]
 PORT = data["PORT"]
-print(HOST, PORT)
 __all__ = ["Connector"]
 
 class Connector:
@@ -47,7 +46,7 @@ class Connector:
         except asyncio.CancelledError:
             pass
         except Exception as e:
-            logging.error(f"\n[ERROR] Reading error: {e}")
+            logging.error(f"[ERROR] Reading error: {e}")
 
     async def on_message(self, message: bytes):
         """

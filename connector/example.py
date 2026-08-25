@@ -1,5 +1,5 @@
 import asyncio
-from connector.connector import Connector
+from ..connector.connector import Connector
 
 class Connect(Connector):
     async def on_message(self, message):

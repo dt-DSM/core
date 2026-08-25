@@ -1,5 +1,5 @@
-from ..globals import DIR
-from ..utils import jsonIO
+from globals import DIR
+from utils import jsonIO
 
 st_json = DIR / "registry/server_types.json"
 

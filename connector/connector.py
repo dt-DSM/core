@@ -1,10 +1,10 @@
 import asyncio, json, logging
 from pathlib import Path
-DIR = Path(__file__).resolve().parent.parent
-with open(DIR / "data.json", "r") as file:
-    data = json.load(file)
-HOST = data["HOST"]
-PORT = data["PORT"]
+# DIR = Path(__file__).resolve().parent.parent
+# with open(DIR / "data.json", "r") as file:
+#     data = json.load(file)
+# HOST = data["HOST"]
+# PORT = data["PORT"]
 __all__ = ["Connector"]
 
 class Connector:
@@ -13,14 +13,16 @@ class Connector:
 
     run await Connector().start() to connect to DCM-core
     """
-    def __init__(self):
+    def __init__(self, HOST, PORT):
+        self.HOST = HOST
+        self.PORT = PORT
         self.command_queue: asyncio.Queue[bytes] = asyncio.Queue(10)
 
     async def start(self):
-        logging.info(f"Connecting to server at {HOST}:{PORT}...")
+        logging.info(f"Connecting to server at {self.HOST}:{self.PORT}...")
         
         # Establish the asynchronous socket connection
-        reader, writer = await asyncio.open_connection(HOST, PORT)
+        reader, writer = await asyncio.open_connection(self.HOST, self.PORT)
         logging.info("Connected successfully!")
         
         # Start the background listening loop as a concurrent task

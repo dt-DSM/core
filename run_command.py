@@ -1,3 +1,3 @@
-from modules import commands
+import commands
 
 print(dir(commands))

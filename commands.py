@@ -1,45 +1,53 @@
 # imports must go BELOW command declarations!
 
-def tls(start: int = None, end: int = None):
+async def tls(source: str, start: int = None, end: int = None):
     TLSs = db.sql.SQL("SELECT tls FROM {schema}.server_types").format(schema=db.SCHEMA)
     result = db.multiple(TLSs)
-    return jsonIO.dumpb([x[0] for x in result][start:end])
+    return [x[0] for x in result][start:end]
 
-def st(tls, start: int = None, end: int = None):
+async def st(source: str, tls, start: int = None, end: int = None):
     result = db.get("server_types", (tls,), ("tls",), ("st",))
-    return jsonIO.dumpb(result[start:end])
+    return result[start:end]
 
-def create(tls: str, st: str, name: str):
+async def create(source: str, tls: str, st: str, name: str):
+    manager = db.get("server_types", (tls,), ("tls",), ("manager",),)
+    manager = managers.get(manager)
+    if manager is None:
+        return False
+    _ = asyncio.create_task(manager.main.create(source, st, name))
+    return True
+
+async def response(source: str, id: str, args: dict):
     pass
 
-def response(id: str, args: dict):
+async def start(source: str, server: str):
     pass
 
-def start(server: str):
+async def stop(source: str, server: str):
     pass
 
-def stop(server: str):
+async def configs(source: str, server: str):
     pass
 
-def configs(server: str):
+async def set(source: str, server: str, config: str, value):
     pass
 
-def set(server: str, config: str, value):
+async def status(source: str, server: str):
     pass
 
-def status(server: str):
+async def cmd(source: str, server: str, command: str):
     pass
 
-def cmd(server: str, command: str):
-    pass
-
-def msg(server: str, text: str):
+async def msg(source: str, server: str, text: str):
     pass
 
 # registry creation
 cmds = dir()
-import sys
-from driftech_lib import jsonIO, db
+
+import sys, asyncio
+from driftech_lib import db
+from globals import managers
+
 command_registry = {}
 module = sys.modules[__name__]
 for command in cmds:

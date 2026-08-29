@@ -17,7 +17,7 @@ def remove_manager(manager):
 db.table("server_types", [
     "manager TEXT",
     "tls TEXT PRIMARY KEY",
-    "st TEXT"
+    "st TEXT[]"
     ])
 
 db.table("servers", [
@@ -31,3 +31,6 @@ db.table("accounts", [
     "password TEXT",
     "tier BIGINT DEFAULT 0"
     ])
+
+db.insert("server_types", ("tls",), ("manager", "st"), ("minecraft", "minecraft", ["forge", "fabric"]))
+db.insert("server_types", ("tls",), ("manager", "st"), ("factorio", "factorio", ["factorio"]))

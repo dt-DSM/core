@@ -32,5 +32,6 @@ db.table("accounts", [
     "tier BIGINT DEFAULT 0"
     ])
 
+# TESTING STUFF
 db.insert("server_types", ("tls",), ("manager", "st"), ("minecraft", "minecraft", ["forge", "fabric"]))
 db.insert("server_types", ("tls",), ("manager", "st"), ("factorio", "factorio", ["factorio"]))
